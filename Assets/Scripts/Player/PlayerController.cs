@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance;
+
     [SerializeField] private float moveSpeed = 5.0f;
 
     private PlayerControls playerControls;
@@ -11,12 +13,17 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+    private Knockback knockback;
+
+    public bool facingLeft = false;
 
     private void Awake() {
+        Instance = this;
         playerControls = new PlayerControls();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        knockback = GetComponent<Knockback>();
     }
     
     private void OnEnable() {
@@ -40,11 +47,19 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Move() {
+        if (knockback.gettingKnockedBack) { return; }
+
         rb.MovePosition(rb.position + movement * (moveSpeed * Time.fixedDeltaTime));
     }
 
     private void AdjustPlayerFacingDirection() {
         Vector3 mousePosition = Input.mousePosition;
         Vector3 playerScreenPoint = Camera.main.WorldToScreenPoint(transform.position);
+
+        if (mousePosition.x < playerScreenPoint.x) {
+            facingLeft = true;
+        } else {
+            facingLeft = false;
+        }
     }
 }
