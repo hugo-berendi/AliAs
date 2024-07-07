@@ -166,6 +166,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 974728b125e5e6b29b7ecca84082be7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 3488781498028942241, guid: 3d17b1d6748e69800be2fe1840ef64bd, type: 3}
+  shootingRadius: 10
+  shootingCooldown: 2
 --- !u!114 &3526077715446818891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,7 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4dc0adfc004ce531bd80b8365e4a649, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 6
+  startingHealth: 3
   knockBackThrust: 15
 --- !u!114 &4937449694631384404
 MonoBehaviour:

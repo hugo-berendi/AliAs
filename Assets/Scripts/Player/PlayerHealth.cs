@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -28,8 +29,12 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D other) {
         EnemyAI enemy = other.gameObject.GetComponent<EnemyAI>();
+        Projectile projectile = other.gameObject.GetComponent<Projectile>();
 
-        if (enemy && canTakeDamage) {
+        if ((enemy || projectile) && canTakeDamage) {
+            if (projectile) {
+                Destroy(projectile.gameObject);
+            }
             TakeDamage(1, other.gameObject.transform);
         }
     }
@@ -41,7 +46,6 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= damageAmount;
         StartCoroutine(DamageRecoveryRoutine());
         UpdateHealthSlider();
-        CheckIfPlayerDeath();
     }
 
     private void CheckIfPlayerDeath() {
@@ -49,6 +53,7 @@ public class PlayerHealth : MonoBehaviour
             currentHealth = 0;
             Debug.Log("Player is dead");
             Destroy(this.gameObject);
+            SceneManager.LoadSceneAsync("TitleScene");
         }
     }
 
@@ -64,5 +69,6 @@ public class PlayerHealth : MonoBehaviour
 
         healthSlider.maxValue = maxHealth;
         healthSlider.value = currentHealth;
+        CheckIfPlayerDeath();
     }
 }
